@@ -150,7 +150,9 @@ export default {
        * 1. Use default country if passed from parent
        */
       if (this.defaultCountry) {
-        const defaultCountry = this.findCountry(this.defaultCountry);
+        const defaultCountry =
+          this.findCountry(this.defaultCountry) ||
+          this.findCountryByDialCode(this.defaultCountry);
         if (defaultCountry) {
           this.activeCountry = defaultCountry;
           return;
@@ -181,6 +183,11 @@ export default {
     },
     findCountry(iso = "") {
       return allCountries.find(country => country.iso2 === iso.toUpperCase());
+    },
+    findCountryByDialCode(dialCode = "") {
+      return allCountries.find(
+        country => country.dialCode === dialCode.replace("+", "")
+      );
     },
     getItemClass(index, iso2) {
       const highlighted = this.selectedIndex === index;
